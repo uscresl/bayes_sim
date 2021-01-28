@@ -1,13 +1,15 @@
 import os
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
+#import seaborn as sns
+#import matplotlib.pyplot as plt
 from matplotlib import cm
 import delfi.distribution as dd
-from src.data.franka_data_generator import FrankaDataGenerator
-from src.models.mdn import MDNN, MDRFF, MDLSTM, MDRFFLSTM
-from src.models.bayes_sim import BayesSim
+from bayes_sim.src.data.franka_data_generator import FrankaDataGenerator
+from bayes_sim.src.models.mdn import MDNN, MDRFF, MDLSTM, MDRFFLSTM
+from bayes_sim.src.models.bayes_sim import BayesSim
 from delfi.distribution.mixture.GaussianMixture import MoG
+
+from bayes_sim.src.models.mdn import MDNN, MDRFF, MDLSTM, MDRFFLSTM
 
 
 def get_mdn(n_components=2, nhidden=2, nunits=[24,24], output_dim=None, input_dim=None):
@@ -135,11 +137,11 @@ def train(batch_size=250, epochs=500, params_dim=1, stats_dim=154, n_components=
     inf = BayesSim(generator=generator, model=model, params_dim=params_dim, stats_dim=stats_dim)
     log, train_data = inf.run(n_train=num_sampled_points, epochs=epochs, n_rounds=1,
                               batch_size=batch_size)
-
-    plt.plot(log[0]['loss'])
-    plt.xlabel('Iteration')
-    plt.ylabel('Loss')
-    plt.show()
+    print(log[0]["loss"])
+    #plt.plot(log[0]['loss'])
+    #plt.xlabel('Iteration')
+    #plt.ylabel('Loss')
+    #plt.show()
     return log, inf
 
 
@@ -167,17 +169,17 @@ def get_results_from_true_obs(true_obs=None, generator=None, inf=None, shapes=No
                    p_lower=p_lower, p_upper=p_upper)
 
 
-if __name__ == "__main__":
-    cur_root_dir = os.path.split(os.getcwd())[0]
-    data_file = os.path.join(os.path.join(cur_root_dir, "assets/data_stiffness_5k.pkl"))
-
-    g = FrankaDataGenerator(data_file=data_file, load_from_disk=True, params_dim=1, data_dim=154)
-    params, stats = g.gen(1)
-    shapes = {"params": params.shape[1], "data": stats.shape[1]}
-    print("Total data size: {}".format(g.total_size))
-
-    log, inf = train(epochs=100, batch_size=500, generator=g, model="MDRFF")
-    true_obs = np.array([[6000]])
-
-    get_results_from_true_obs(true_obs, generator=g, inf=inf, shapes=shapes, param_name="Stiffness", model_name="MDN")
-
+# if __name__ == "__main__":
+#     cur_root_dir = os.path.split(os.getcwd())[0]
+#     data_file = os.path.join(os.path.join(cur_root_dir, "assets/data_stiffness_5k.pkl"))
+#
+#     g = FrankaDataGenerator(data_file=data_file, load_from_disk=True, params_dim=1, data_dim=154)
+#     params, stats = g.gen(1)
+#     shapes = {"params": params.shape[1], "data": stats.shape[1]}
+#     print("Total data size: {}".format(g.total_size))
+#
+#     log, inf = train(epochs=100, batch_size=500, generator=g, model="MDRFF")
+#     true_obs = np.array([[6000]])
+#
+#     get_results_from_true_obs(true_obs, generator=g, inf=inf, shapes=shapes, param_name="Stiffness", model_name="MDN")
+#

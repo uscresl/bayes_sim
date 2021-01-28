@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.random as rng
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import pickle
 import delfi.distribution as dd
 # def disp_imdata(xs, imsize, layout=(1,1)):

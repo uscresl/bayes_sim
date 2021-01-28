@@ -1,6 +1,6 @@
 # Other imports
 from datetime import datetime
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 import tensorflow_probability as tfp
@@ -16,11 +16,12 @@ from tensorflow.keras.layers import ELU
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from sklearn.preprocessing import StandardScaler
-from src.models.random_features import RFF
-from src.models.random_features_tf import RFF as RFF_TF
+from bayes_sim.src.models.random_features import RFF
+from bayes_sim.src.models.random_features_tf import RFF as RFF_TF
 
-import src.utils.pdf as pdf
+#import src.utils.pdf as pdf
 
+import bayes_sim.src.utils.pdf as pdf
 # Set up CPU or GPU
 config = tf.ConfigProto(device_count={'CPU': 6, 'GPU': 2})
 config.gpu_options.allow_growth = True
