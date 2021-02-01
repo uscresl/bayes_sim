@@ -1,7 +1,7 @@
 import os
 import numpy as np
 #import seaborn as sns
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from matplotlib import cm
 import delfi.distribution as dd
 from bayes_sim.src.data.franka_data_generator import FrankaDataGenerator
@@ -10,6 +10,7 @@ from bayes_sim.src.models.bayes_sim import BayesSim
 from delfi.distribution.mixture.GaussianMixture import MoG
 
 from bayes_sim.src.models.mdn import MDNN, MDRFF, MDLSTM, MDRFFLSTM
+from python.bayessim_adaptor.bayessim_plotting import plot_3d_posterior
 
 
 def get_mdn(n_components=2, nhidden=2, nunits=[24,24], output_dim=None, input_dim=None):
@@ -112,7 +113,12 @@ def plot_1d_posterior(env_params=None, p_lower=[0.1, 0.1], p_upper=[2.0, 2.0], p
 def plot_posterior(env_params=["length", "mass"], true_obs=None, posterior=None, params_shape=2,
                    p_lower=[0.1, 0.1], p_upper=[2.0, 2.0]):
 
-    plot_2d_posterior(env_params=env_params, posterior=posterior, true_obs=true_obs)
+    if true_obs.shape[1] == 2:
+        plot_2d_posterior(env_params=env_params, posterior=posterior, true_obs=true_obs)
+    elif true_obs.shape[1] == 3:
+        plot_3d_posterior(env_params=env_params, posterior=posterior, true_obs=true_obs, xmin=p_lower[0],xmax=p_upper[0],ymin=p_lower[1],ymax=p_upper[1],zmin=p_lower[2],zmax=p_upper[2])
+    else:
+        raise Exception()
 
 
 
